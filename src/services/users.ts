@@ -1,5 +1,5 @@
 import { ActionError, safeAction } from "@/lib/safe-action";
-import { prisma } from "@/prisma";
+import { prisma } from "../prisma";
 import { User } from "@prisma/client";
 import saltAndHashPassword from "@/utils/users/saltAndHashPassword";
 import { registerSchema } from "@/types/schemas";
