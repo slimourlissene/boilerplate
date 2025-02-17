@@ -1,52 +1,46 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import NextAuth from "next-auth";
-import { User } from "@prisma/client";
+import NextAuth, { CredentialsSignin } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { prisma } from "./prisma";
-import Credentials from "next-auth/providers/credentials";
 import bcrypt from "bcryptjs";
+import { loginSchema } from "./types/schemas";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
+  secret: process.env.AUTH_SECRET,
+  session: {
+    strategy: "jwt",
+  },
   providers: [
-    Credentials({
+    CredentialsProvider({
       credentials: {
         email: {},
         password: {},
       },
-      authorize: async (credentials) => {
+      async authorize(credentials): Promise<any> {
         try {
-          const { email, password } = credentials as {
-            email: string;
-            password: string;
-          };
-
-          const user: User | null = await prisma.user.findUnique({
-            where: {
-              email,
-            },
-          });
+          const { email, password } = await loginSchema.parseAsync(credentials);
+          const user = await prisma.user.findUnique({ where: { email } });
 
           if (!user) {
-            throw new Error("User not found");
+            throw new Error("User not found, please register");
           }
 
           if (!user.password) {
-            throw new Error("Password need to be set to sign in");
+            throw new Error(
+              "User has no password, you should login with a different provider"
+            );
           }
 
-          const isPasswordValid: boolean = await bcrypt.compareSync(
-            password,
-            user.password
-          );
-
+          const isPasswordValid = bcrypt.compareSync(password, user.password);
           if (!isPasswordValid) {
-            throw new Error("Invalid password");
+            throw new Error("Invalid password, please try again");
           }
 
           return user;
-        } catch (error: unknown) {
+        } catch (error: any) {
           console.error(error);
-          throw new Error("An error occurred while signing in");
+          throw new CredentialsSignin({ cause: error.message });
         }
       },
     }),

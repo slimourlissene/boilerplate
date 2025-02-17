@@ -36,9 +36,9 @@ export default async function RootLayout({
       >
         <Providers>
           <AppSidebar user={session?.user} />
-          <SidebarInset>
+          <SidebarInset className="p-3">
             <SidebarTrigger />
-            <div className="p-4">{children}</div>
+            {children}
           </SidebarInset>
         </Providers>
       </body>

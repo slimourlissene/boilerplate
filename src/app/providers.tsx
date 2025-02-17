@@ -3,6 +3,7 @@
 import * as React from "react";
 import { ThemeProvider as NextThemesProvider } from "next-themes";
 import { SidebarProvider } from "@/components/ui/sidebar";
+import { Toaster } from "@/components/ui/sonner";
 
 export default function Providers({
   children,
@@ -10,6 +11,7 @@ export default function Providers({
   return (
     <ThemeProvider attribute={"class"} defaultTheme="system" enableSystem>
       <SidebarProvider>{children}</SidebarProvider>
+      <Toaster />
     </ThemeProvider>
   );
 }

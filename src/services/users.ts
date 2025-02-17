@@ -1,12 +1,35 @@
+"use server";
 import { ActionError, safeAction } from "@/lib/safe-action";
-import { prisma } from "../prisma";
+import { prisma } from "@/prisma";
 import { User } from "@prisma/client";
 import saltAndHashPassword from "@/utils/users/saltAndHashPassword";
-import { registerSchema } from "@/types/schemas";
+import { loginSchema, registerSchema } from "@/types/schemas";
+import { CredentialsSignin } from "next-auth";
+import { signIn } from "@/auth";
+
+export const login = safeAction
+  .schema(loginSchema)
+  .action(async ({ parsedInput }): Promise<void> => {
+    try {
+      const { email, password } = parsedInput;
+      await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+      });
+    } catch (error: unknown) {
+      console.error(error);
+      if (error instanceof CredentialsSignin) {
+        throw new ActionError(String(error.cause));
+      } else {
+        throw new ActionError("An error occurred, please try again later");
+      }
+    }
+  });
 
 export const register = safeAction
   .schema(registerSchema)
-  .action(async ({ parsedInput }): Promise<User> => {
+  .action(async ({ parsedInput }): Promise<User | undefined> => {
     try {
       const { email, firstname, lastname, password, confirmPassword } =
         parsedInput;
@@ -46,6 +69,6 @@ export const register = safeAction
       return newUser;
     } catch (error: unknown) {
       console.error(error);
-      throw new ActionError("An error occurred while registering the user");
+      throw error;
     }
   });
