@@ -26,3 +26,9 @@ export const loginSchema = z.object({
     message: "Password must be at least 8 characters",
   }),
 });
+
+export const sendEmailSchema = z.object({
+  subject: z.string(),
+  firstName: z.string(),
+  toEmails: z.array(z.string().email()),
+});
