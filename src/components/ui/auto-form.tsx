@@ -1,28 +1,28 @@
-import { Key } from "react";
-import { UseFormReturn } from "react-hook-form";
-import * as z from "zod";
-import { Field } from "@/types/interfaces";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
+  FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
-  FormControl,
   FormMessage,
-  FormDescription,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 import {
   Select,
-  SelectTrigger,
-  SelectValue,
   SelectContent,
   SelectGroup,
   SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
+import { Field } from "@/types/interfaces";
 import cuid from "cuid";
+import { Key } from "react";
+import { UseFormReturn } from "react-hook-form";
+import * as z from "zod";
 
 export default function AutoForm({
   fields,
@@ -41,7 +41,7 @@ export default function AutoForm({
           control={form.control}
           name={field.name.toString()}
           render={({ field: formField }) => (
-            <FormItem>
+            <FormItem className="w-full">
               <div>
                 <FormLabel>{field.label}</FormLabel>
                 {field.description && (

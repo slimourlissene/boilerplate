@@ -1,16 +1,16 @@
 "use client";
 
+import { Button } from "@/components/ui/button";
+import { Form } from "@/components/ui/form";
+import { useLoadingStore } from "@/store/loadingStore";
+import { Field } from "@/types/interfaces";
+import { registerSchema } from "@/types/schemas";
+import onSubmit from "@/utils/users/registerFormSubmit";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-import { Button } from "@/components/ui/button";
-import { Form } from "@/components/ui/form";
-import { registerSchema } from "@/types/schemas";
 import AutoForm from "../ui/auto-form";
-import { Field } from "@/types/interfaces";
 import { DialogClose, DialogFooter } from "../ui/dialog";
-import onSubmit from "@/utils/users/registerFormSubmit";
-import { useLoadingStore } from "@/store/loadingStore";
 
 export default function RegisterForm() {
   const { loading, setLoading } = useLoadingStore();
@@ -75,7 +75,7 @@ export default function RegisterForm() {
               Annuler
             </Button>
           </DialogClose>
-          <Button className="min-w-[100px]" loading={loading} type="submit">
+          <Button className="min-w-[100px]" disabled={loading} type="submit">
             S'inscrire
           </Button>
         </DialogFooter>

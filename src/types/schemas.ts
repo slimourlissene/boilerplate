@@ -27,6 +27,12 @@ export const loginSchema = z.object({
   }),
 });
 
+export const magicLinkSchema = z.object({
+  email: z.string().email({
+    message: "Invalid email",
+  }),
+});
+
 export const sendEmailSchema = z.object({
   subject: z.string(),
   firstName: z.string(),

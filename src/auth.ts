@@ -1,8 +1,9 @@
 import { PrismaAdapter } from "@auth/prisma-adapter";
+import bcrypt from "bcryptjs";
 import NextAuth, { CredentialsSignin } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import Resend from "next-auth/providers/resend";
 import { prisma } from "./prisma";
-import bcrypt from "bcryptjs";
 import { loginSchema } from "./types/schemas";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -12,6 +13,10 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     strategy: "jwt",
   },
   providers: [
+    Resend({
+      apiKey: process.env.RESEND_API_KEY,
+      from: "contact@slimourlissene.fr",
+    }),
     CredentialsProvider({
       credentials: {
         email: {},

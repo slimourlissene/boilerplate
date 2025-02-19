@@ -1,19 +1,19 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { loginSchema } from "@/types/schemas";
-import AutoForm from "../ui/auto-form";
-import { Field } from "@/types/interfaces";
-import { DialogClose, DialogFooter } from "../ui/dialog";
 import { useDialogStore } from "@/store/dialogStore";
 import { useLoadingStore } from "@/store/loadingStore";
+import { Field } from "@/types/interfaces";
+import { loginSchema } from "@/types/schemas";
 import onSubmit from "@/utils/users/loginFormSubmit";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
 import { useRouter } from "next/navigation";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import AutoForm from "../ui/auto-form";
+import { DialogClose, DialogFooter } from "../ui/dialog";
 
 export default function LoginForm() {
   const { setOpen } = useDialogStore();
@@ -61,11 +61,11 @@ export default function LoginForm() {
         <DialogFooter className="pt-3">
           <DialogClose asChild>
             <Button variant={"outline"} type="button">
-              Annuler
+              Cancel
             </Button>
           </DialogClose>
-          <Button className="min-w-[115px]" loading={loading} type="submit">
-            Se connecter
+          <Button className="min-w-[100px]" disabled={loading} type="submit">
+            Login
           </Button>
         </DialogFooter>
       </form>
